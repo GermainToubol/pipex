@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/09 17:30:42 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/31 17:37:07 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/05/10 11:20:09 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/05/31 17:32:51 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
@@ -21,23 +21,23 @@ static char		*gnl_update_newline_buffer(
 					size_t size,
 					t_buffer *buffer);
 
-char	*get_next_line(int fd)
+char	*get_next_line_fds(int fd)
 {
-	static t_buffer	buffer = {0, 0, {0}};
+	static t_buffer	buffer_list[MAX_FDS] = {{0, 0, {0}}};
+	t_buffer		*current_buffer;
 	char			*newline;
-	char			*tmp;
 	size_t			size;
 
 	if (fd < 0)
 		return (NULL);
+	current_buffer = get_buffer(fd, buffer_list);
+	if (current_buffer == NULL)
+		return (NULL);
 	size = 0;
 	newline = NULL;
-	newline = gnl_read_to_newline(fd, &buffer, &size);
+	newline = gnl_read_to_newline(fd, current_buffer, &size);
 	if (newline)
-	{
-		tmp = gnl_update_newline_buffer(newline, size, &buffer);
-		newline = tmp;
-	}
+		newline = gnl_update_newline_buffer(newline, size, current_buffer);
 	return (newline);
 }
 
@@ -88,7 +88,7 @@ static size_t	gnl_join(char **dest, size_t size_d, char *src, size_t size_s)
 
 	tmp = NULL;
 	if (size_d + size_s != 0)
-		tmp = malloc(size_d + size_s);
+		tmp = ft_calloc(size_d + size_s, sizeof(*tmp));
 	if (!tmp)
 	{
 		free(*dest);

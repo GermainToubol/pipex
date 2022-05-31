@@ -6,7 +6,7 @@
 #    By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/16 16:41:38 by gtoubol           #+#    #+#              #
-#    Updated: 2022/05/31 09:59:40 by gtoubol          ###   ########.fr        #
+#    Updated: 2022/05/31 17:33:08 by gtoubol          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 SRCS = 		ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c 		\
@@ -23,8 +23,10 @@ SRCS = 		ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c 		\
 			ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c	\
 			ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c	\
 			ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c	\
-			get_next_line.c get_next_line_utils.c
+			get_next_line.c ft_free_split.c			\
+			get_next_line_fds.c get_next_line_utils_fds.c
 OBJS =		$(SRCS:.c=.o)
+DEPS =		$(OBJS:.o=.d)
 
 NAME =		libft.a
 
@@ -35,13 +37,19 @@ RM =		rm -f
 $(NAME):	$(OBJS)
 			ar rcs $@ $^
 
-$(OBJS):	%.o:%.c
+%.o:		%.c
 			$(CC) $(CFLAGS) -o $@ -c $<
+
+%.d:		%.c
+			@set -e; rm -f $@;												\
+			$(CC) -MM $(CFLAGS) $(INCLUDES) $< > $@.$$$$;					\
+			sed 's,\($*\)\.	o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;			\
+			rm -f $@.$$$$
 
 all:		$(NAME)
 
 clean:
-			$(RM) $(OBJS)
+			$(RM) $(OBJS) $(DEPS)
 
 fclean:		clean
 			$(RM) $(NAME)
@@ -49,3 +57,5 @@ fclean:		clean
 re:			fclean all
 
 .PHONY:		all clean fclean re
+
+include		$(DEPS)

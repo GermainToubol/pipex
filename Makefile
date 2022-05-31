@@ -6,10 +6,10 @@
 #    By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 10:59:36 by gtoubol           #+#    #+#              #
-#    Updated: 2022/05/31 12:20:01 by gtoubol          ###   ########.fr        #
+#    Updated: 2022/05/31 17:50:08 by gtoubol          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
-SRCS =		pipex.c pp_fullname.c
+SRCS =		pipex.c pp_fullname.c pp_get_path.c pp_read_file.c
 OBJS = 		$(SRCS:.c=.o)
 DEPS =		$(SRCS:.c=.d)
 
@@ -29,6 +29,7 @@ $(NAME):	$(OBJS) $(LIBFT)
 
 %.o:		%.c
 			$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
+
 
 %.d:		%.c
 			@set -e; rm -f $@;												\
@@ -53,6 +54,6 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re bonus
+.PHONY:		all clean fclean re bonus test
 
 include		$(DEPS)

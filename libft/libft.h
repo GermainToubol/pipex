@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 15:03:43 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/16 16:38:51 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/05/31 17:36:50 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -48,6 +48,7 @@ char		*ft_substr(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strtrim(char const *s1, char const *set);
 char		**ft_split(char const *s, char c);
+void		ft_free_split(char **strs);
 char		*ft_itoa(int n);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));
@@ -68,7 +69,7 @@ t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* Get_next_line integration */
 
 # define BUFFER_SIZE 42
-# define MAX_FDS 2
+# define MAX_FDS 25
 
 typedef struct s_buffer
 {
@@ -78,14 +79,8 @@ typedef struct s_buffer
 }	t_buffer;
 
 char		*get_next_line(int fd);
+char		*get_next_line_fds(int fd);
 t_buffer	*get_buffer(int fd, t_buffer *buffers);
-size_t		gnl_nl_place(char *str, size_t size);
-char		*gnl_read_to_newline(int fd, t_buffer *buffer, size_t *size);
-size_t		gnl_join(char **dest, size_t size_d, char *src, size_t size_s);
-char		*gnl_update_newline_buffer(
-				char *src,
-				size_t size,
-				t_buffer *buffer);
 
 /* ft_printf integration */
 

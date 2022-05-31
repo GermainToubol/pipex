@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/31 09:31:16 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/31 17:53:16 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/05/31 14:50:01 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/05/31 14:52:18 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef PIPEX_H
-# define PIPEX_H
+#include <stdlib.h>
+#include "libft.h"
 
-char	*pp_fullname(char *name, char **path);
-char	**pp_get_path(char **env);
-int		pp_read_file(char *filename);
-#endif
+void	ft_free_split(char **strs)
+{
+	int	i;
+
+	if (strs == NULL)
+		return ;
+	i = 0;
+	while (strs[i] != NULL)
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
+}
