@@ -1,49 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pp_read_file.c                                     :+:      :+:    :+:   */
+/*   pp_write_file_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/31 16:55:49 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/31 18:19:50 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/06/01 14:05:29 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/06/01 16:09:21 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "libft.h"
 #include "pipex.h"
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-/*
- * Read the given file and put it content on STD_OUT.
- *
- */
-
-int	pp_read_file(char *filename)
+int	pp_write_file_bonus(char *filename)
 {
 	int		fd;
 	char	*line;
-	int tube[2];
-	char *args[] = {"cat", NULL};
 
-	pipe(tube);
-	//dup2(tube[0], 0);
-	dup2(tube[1], 1);
-	fd = open(filename, O_RDONLY);
+	fd = open(filename, O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (fd == -1)
 		return (1);
-	line = get_next_line(fd);
+	line = get_next_line(0);
 	while (line != NULL)
 	{
-		ft_putstr_fd(line, tube[1]);
+		ft_putstr_fd(line, fd);
 		free(line);
-		line = get_next_line(fd);
+		line = get_next_line(0);
 	}
-	execve("/usr/bin/cat", args, NULL);
+	close(fd);
 	if (errno != 0)
 		return (1);
 	return (0);

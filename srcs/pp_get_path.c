@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 13:36:54 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/31 15:00:45 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/01 12:42:37 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -70,6 +70,22 @@ static char	**pp_path_split(char *path)
 	return (pp_strs_paths(tmp));
 }
 
+static int	pp_path(char **paths, char **path)
+{
+	int	i;
+
+	paths[0] = ft_strdup("");
+	i = 0;
+	while (paths[0] != NULL && path[i] != NULL)
+	{
+		paths[i + 1] = ft_strjoin(path[i], "/");
+		if (paths[i + 1] == NULL)
+			break ;
+		i++;
+	}
+	return (i);
+}
+
 static char	**pp_strs_paths(char **path)
 {
 	int		i;
@@ -84,15 +100,7 @@ static char	**pp_strs_paths(char **path)
 		ft_free_split(path);
 		return (NULL);
 	}
-	paths[0] = ft_strdup("");
-	i = 0;
-	while (paths[0] != NULL && path[i] != NULL)
-	{
-		paths[i + 1] = ft_strjoin(path[i], "/");
-		if (paths[i + 1] == NULL)
-			break ;
-		i++;
-	}
+	i = pp_path(paths, path);
 	if (path[i] != NULL)
 	{
 		ft_free_split(paths);

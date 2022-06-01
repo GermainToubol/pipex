@@ -6,7 +6,7 @@
 #    By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/16 16:41:38 by gtoubol           #+#    #+#              #
-#    Updated: 2022/05/31 17:33:08 by gtoubol          ###   ########.fr        #
+#    Updated: 2022/06/01 14:39:00 by gtoubol          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 SRCS = 		ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c 		\
@@ -24,7 +24,7 @@ SRCS = 		ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c 		\
 			ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c	\
 			ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c	\
 			get_next_line.c ft_free_split.c			\
-			get_next_line_fds.c get_next_line_utils_fds.c
+			get_next_line_fds.c get_next_line_utils_fds.c ft_strcmp.c
 OBJS =		$(SRCS:.c=.o)
 DEPS =		$(OBJS:.o=.d)
 
