@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 09:34:20 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/01 12:44:31 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/01 17:37:32 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -63,9 +63,8 @@ static char	**pp_available_path(char *name, char **path)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (path[i] != NULL)
+	while (path[i] != NULL && (name[0] != '.' || i == 0))
 	{
-		(void)name;
 		fullname = ft_strjoin(path[i], name);
 		if (fullname != NULL && access(fullname, F_OK) == 0)
 			fullnames[j++] = fullname;

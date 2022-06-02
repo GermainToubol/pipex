@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 16:26:02 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/01 17:01:11 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/02 16:29:24 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -39,7 +39,7 @@ int	do_read_bonus(char *filename, int *pipe_out, int *is_son, int here_doc)
 	return (status);
 }
 
-int	do_process(char *execfile, int *pipe_in, int *pipe_out, int *is_son)
+int	do_process(t_exec *cmd, int *pipe_in, int *pipe_out, int *is_son)
 {
 	int		status;
 	pid_t	pid;
@@ -49,7 +49,7 @@ int	do_process(char *execfile, int *pipe_in, int *pipe_out, int *is_son)
 	if (pid == 0)
 	{
 		*is_son = 1;
-		return (pp_process_exec(execfile, pipe_in, pipe_out));
+		return (pp_process_exec(cmd, pipe_in, pipe_out));
 	}
 	if (pid == -1)
 	{
