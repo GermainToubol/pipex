@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 16:26:02 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/02 16:29:24 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/03 16:49:42 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -18,7 +18,6 @@
 
 int	do_read_bonus(char *filename, int *pipe_out, int *is_son, int here_doc)
 {
-	int		status;
 	pid_t	pid;
 
 	pipe(pipe_out);
@@ -35,13 +34,11 @@ int	do_read_bonus(char *filename, int *pipe_out, int *is_son, int here_doc)
 		perror("fork");
 		return (1);
 	}
-	waitpid(pid, &status, 0);
-	return (status);
+	return (0);
 }
 
 int	do_process(t_exec *cmd, int *pipe_in, int *pipe_out, int *is_son)
 {
-	int		status;
 	pid_t	pid;
 
 	pipe(pipe_out);
@@ -58,13 +55,11 @@ int	do_process(t_exec *cmd, int *pipe_in, int *pipe_out, int *is_son)
 	}
 	close(pipe_in[0]);
 	close(pipe_in[1]);
-	waitpid(pid, &status, 0);
-	return (status);
+	return (0);
 }
 
 int	do_write_bonus(char *filename, int *pipe_in, int *is_son, int here_doc)
 {
-	int		status;
 	pid_t	pid;
 
 	pid = fork();
@@ -82,6 +77,5 @@ int	do_write_bonus(char *filename, int *pipe_in, int *is_son, int here_doc)
 	}
 	close(pipe_in[0]);
 	close(pipe_in[1]);
-	waitpid(pid, &status, 0);
-	return (status);
+	return (0);
 }
