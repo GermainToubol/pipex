@@ -6,13 +6,13 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 16:09:17 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/03 16:48:58 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 10:31:35 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <unistd.h>
+#include <sys/wait.h>
 #include "libft.h"
 #include "pipex.h"
-#include <sys/wait.h>
 
 static int	pp_init_main(t_status *status, t_exec *cmd,
 				char **env, char **argv);
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **env)
 static int	pp_wait(t_status *status, int n_process)
 {
 	int	i;
-	int tmp;
+	int	tmp;
 
 	if (status->is_son != 0)
 		return (status->status);

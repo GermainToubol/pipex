@@ -13,9 +13,10 @@
 #include "libft.h"
 
 static int	get_hex_len(unsigned int nbr);
-static void	putnbr_hex(unsigned int nbr, char *charset);
+static void	putnbr_hex(const int fd, unsigned int nbr, char *charset);
 
-int	ft_printf_hex_base(unsigned int nbr, char *charset, t_convert *convert)
+int	ft_printf_hex_base(const int fd, unsigned int nbr, char *charset,
+		t_convert *convert)
 {
 	int	len;
 
@@ -24,19 +25,19 @@ int	ft_printf_hex_base(unsigned int nbr, char *charset, t_convert *convert)
 	if (nbr != 0 && convert->alternate == '#')
 	{
 		if (!convert->leftify && convert->padd_char == ' ')
-			len += ft_printf_padding(len + 2, convert);
-		len += write(1, charset + 16, 2);
+			len += ft_printf_padding(fd, len + 2, convert);
+		len += write(fd, charset + 16, 2);
 		if (!convert->leftify && convert->padd_char == '0')
-			len += ft_printf_padding(len, convert);
+			len += ft_printf_padding(fd, len, convert);
 	}
 	else
 	{
 		if (!convert->leftify)
-			len += ft_printf_padding(len, convert);
+			len += ft_printf_padding(fd, len, convert);
 	}
-	ft_printf_precision(convert);
-	putnbr_hex(nbr, charset);
-	len += ft_printf_padding(len, convert);
+	ft_printf_precision(fd, convert);
+	putnbr_hex(fd, nbr, charset);
+	len += ft_printf_padding(fd, len, convert);
 	return (len);
 }
 
@@ -53,11 +54,11 @@ static int	get_hex_len(unsigned int nbr)
 	return (len);
 }
 
-static void	putnbr_hex(unsigned int nbr, char *charset)
+static void	putnbr_hex(const int fd, unsigned int nbr, char *charset)
 {
 	if (nbr == 0)
 		return ;
 	if (nbr > 15)
-		putnbr_hex(nbr / 16, charset);
-	ft_putchar_fd(charset[nbr % 16], 1);
+		putnbr_hex(fd, nbr / 16, charset);
+	ft_putchar_fd(charset[nbr % 16], fd);
 }

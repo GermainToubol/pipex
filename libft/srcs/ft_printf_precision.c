@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include "libft.h"
 
-int	ft_printf_precision(t_convert *convert)
+int	ft_printf_precision(const int fd, t_convert *convert)
 {
 	int	n;
 	int	i;
@@ -21,7 +21,7 @@ int	ft_printf_precision(t_convert *convert)
 	i = 0;
 	while (i < convert->precision)
 	{
-		n += write(1, "0", 1);
+		n += write(fd, "0", 1);
 		i++;
 	}
 	return (n);

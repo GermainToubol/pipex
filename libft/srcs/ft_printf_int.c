@@ -13,10 +13,10 @@
 #include "libft.h"
 
 static int	get_int_len(int n);
-static void	printf_nbr(int n);
-static void	printf_sign(int n, t_convert *convert);
+static void	printf_nbr(const int fd, int n);
+static void	printf_sign(const int fd, int n, t_convert *convert);
 
-int	ft_printf_int(int n, t_convert *convert)
+int	ft_printf_int(const int fd, int n, t_convert *convert)
 {
 	int	len;
 
@@ -27,30 +27,30 @@ int	ft_printf_int(int n, t_convert *convert)
 	if (!convert->leftify)
 	{
 		if (convert->padd_char == '0')
-			printf_sign(n, convert);
-		len += ft_printf_padding(len, convert);
+			printf_sign(fd, n, convert);
+		len += ft_printf_padding(fd, len, convert);
 		if (convert->padd_char == ' ')
-			printf_sign(n, convert);
+			printf_sign(fd, n, convert);
 	}
 	else
-		printf_sign(n, convert);
-	ft_printf_precision(convert);
+		printf_sign(fd, n, convert);
+	ft_printf_precision(fd, convert);
 	if (n != 0)
-		printf_nbr(n);
-	len += ft_printf_padding(len, convert);
+		printf_nbr(fd, n);
+	len += ft_printf_padding(fd, len, convert);
 	return (len);
 }
 
-static void	printf_sign(int n, t_convert *convert)
+static void	printf_sign(const int fd, int n, t_convert *convert)
 {
 	if (n < 0)
-		ft_putchar_fd('-', 1);
+		ft_putchar_fd('-', fd);
 	else
 	{
 		if (convert->sign == 1)
-			ft_putchar_fd(' ', 1);
+			ft_putchar_fd(' ', fd);
 		if (convert->sign == 2)
-			ft_putchar_fd('+', 1);
+			ft_putchar_fd('+', fd);
 	}
 }
 
@@ -67,7 +67,7 @@ static int	get_int_len(int n)
 	return (len);
 }
 
-static void	printf_nbr(int n)
+static void	printf_nbr(const int fd, int n)
 {
 	int		sign;
 	char	*digits;
@@ -77,6 +77,6 @@ static void	printf_nbr(int n)
 	if (n < 0)
 		sign = -1;
 	if (sign * n > 9 || sign * n < 0)
-		printf_nbr(sign * (n / 10));
-	ft_putchar_fd(digits[sign * (n % 10)], 1);
+		printf_nbr(fd, sign * (n / 10));
+	ft_putchar_fd(digits[sign * (n % 10)], fd);
 }

@@ -12,15 +12,15 @@
 #include <unistd.h>
 #include "libft.h"
 
-int	ft_printf_char(char c, t_convert *convert)
+int	ft_printf_char(const int fd, char c, t_convert *convert)
 {
 	int	len;
 
 	len = 0;
 	convert->padd_char = ' ';
 	if (!convert->leftify)
-		len += ft_printf_padding(1, convert);
-	len += write(1, &c, 1);
-	len += ft_printf_padding(len, convert);
+		len += ft_printf_padding(fd, 1, convert);
+	len += write(fd, &c, 1);
+	len += ft_printf_padding(fd, len, convert);
 	return (len);
 }

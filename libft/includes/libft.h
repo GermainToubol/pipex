@@ -81,7 +81,7 @@ typedef struct s_buffer
 
 char		*get_next_line(int fd);
 char		*get_next_line_fds(int fd);
-t_buffer	*get_buffer(int fd, t_buffer *buffers);
+t_buffer	*gnl_get_buffer(int fd, t_buffer *buffers);
 
 /* ft_printf integration */
 
@@ -99,32 +99,33 @@ typedef struct s_convert
 }	t_convert;
 
 int			ft_printf(const char *format, ...);
+int			ft_fprintf(const int fd, const char *format, ...);
 
-int			ft_printf_char(char c, t_convert *convert);
-int			ft_printf_str(char *str, t_convert *convert);
-
-int			ft_printf_long_hex(unsigned long int nbr,
+int			ft_printf_char(const int fd, char c, t_convert *convert);
+int			ft_printf_str(const int fd, char *str, t_convert *convert);
+int			ft_printf_long_hex(const int fd, unsigned long int nbr,
 				char *charset,
 				t_convert *convert);
-int			ft_printf_ptr(void	*ptr, t_convert *convert);
+int			ft_printf_ptr(const int fd, void	*ptr, t_convert *convert);
 
-int			ft_printf_int(int n, t_convert *convert);
-int			ft_printf_unsigned(unsigned int nbr, t_convert *convert);
-
-int			ft_printf_hex_base(unsigned int nbr, char *charset,
+int			ft_printf_int(const int fd, int n, t_convert *convert);
+int			ft_printf_unsigned(const int fd, unsigned int nbr,
 				t_convert *convert);
-int			ft_printf_hex(unsigned int nbr, t_convert *convert);
-int			ft_printf_hex_caps(unsigned int nbr, t_convert *convert);
 
-int			ft_printf_percent(void);
+int			ft_printf_hex_base(const int fd, unsigned int nbr, char *charset,
+				t_convert *convert);
+int			ft_printf_hex(const int fd, unsigned int nbr, t_convert *convert);
+int			ft_printf_hex_caps(const int fd, unsigned int nbr,
+				t_convert *convert);
 
-int			ft_printf_padding(int len, t_convert *convert);
+int			ft_printf_percent(const int fd);
+
+int			ft_printf_padding(const int fd, int len, t_convert *convert);
 int			ft_atoi_padding(char *format, t_convert *convert);
 
-int			ft_printf_precision(t_convert *convert);
+int			ft_printf_precision(const int fd, t_convert *convert);
 int			ft_len_precision(int len, t_convert *convert);
 int			ft_atoi_precision(char *format, t_convert *convert);
 
 int			set_arguments(char *format, t_convert *convert);
-
 #endif

@@ -13,20 +13,20 @@
 #include "libft.h"
 
 static int	get_len_unsigned(unsigned int nbr);
-static void	putnbr_unsigned(unsigned int nbr);
+static void	putnbr_unsigned(const int fd, unsigned int nbr);
 
-int	ft_printf_unsigned(unsigned int nbr, t_convert *convert)
+int	ft_printf_unsigned(const int fd, unsigned int nbr, t_convert *convert)
 {
 	int	len;
 
 	len = get_len_unsigned(nbr);
 	len += ft_len_precision(len, convert);
 	if (!convert->leftify)
-		len += ft_printf_padding(len, convert);
-	ft_printf_precision(convert);
+		len += ft_printf_padding(fd, len, convert);
+	ft_printf_precision(fd, convert);
 	if (nbr != 0)
-		putnbr_unsigned(nbr);
-	len += ft_printf_padding(len, convert);
+		putnbr_unsigned(fd, nbr);
+	len += ft_printf_padding(fd, len, convert);
 	return (len);
 }
 
@@ -43,12 +43,12 @@ static int	get_len_unsigned(unsigned int nbr)
 	return (len);
 }
 
-static void	putnbr_unsigned(unsigned int nbr)
+static void	putnbr_unsigned(const int fd, unsigned int nbr)
 {
 	char	*digits;
 
 	digits = "0123456789";
 	if (nbr > 9)
-		putnbr_unsigned(nbr / 10);
-	ft_putchar_fd(digits[nbr % 10], 1);
+		putnbr_unsigned(fd, nbr / 10);
+	ft_putchar_fd(digits[nbr % 10], fd);
 }

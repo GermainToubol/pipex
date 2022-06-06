@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-t_buffer	*get_buffer(int fd, t_buffer *buffers)
+t_buffer	*gnl_get_buffer(int fd, t_buffer *buffers)
 {
 	int	new_fd;
 	int	i;

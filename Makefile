@@ -6,35 +6,63 @@
 #    By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 10:59:36 by gtoubol           #+#    #+#              #
-#    Updated: 2022/06/03 11:11:47 by gtoubol          ###   ########.fr        #
+#    Updated: 2022/06/06 10:29:12 by gtoubol          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
-SRCS_0 =	pp_fullname.c pp_get_path.c pp_process_exec.c pp_write_file.c	\
+
+# List of all the sources (.c)
+# -------------------------------------------------------------------------
+SRCS =		pp_fullname.c pp_get_path.c pp_process_exec.c pp_write_file.c	\
 			pp_read_file.c pp_process_read.c pp_process_write.c
-VANILLA_0 =	pipex.c  pp_process_utils.c
-BONUS_0 =	pp_write_file_bonus.c pp_read_file_bonus.c pipex_bonus.c		\
+VANILLA =	pipex.c  pp_process_utils.c
+BONUS =		pp_write_file_bonus.c pp_read_file_bonus.c pipex_bonus.c		\
 			pp_process_utils_bonus.c pp_process_read_bonus.c 				\
 			pp_process_write_bonus.c
 
-SRCS =		$(addprefix srcs/,$(SRCS_0))
-VANILLA =	$(addprefix srcs/,$(VANILLA_0))
-BONUS =		$(addprefix srcs/,$(BONUS_0))
 
-OBJS = 		$(SRCS:.c=.o) $(VANILLA:.c=.o)
-OBJS_B =	$(SRCS:.c=.o) $(BONUS:.c=.o)
-DEPS =		$(SRCS:.c=.d) $(VANILLA:.c=.d) $(BONUS:.c=.d)
+# List of the related directories
+# -------------------------------------------------------------------------
+SRCS_DIR =	srcs
+HEAD_DIR =	includes libft/includes
 
-NAME = 		pipex
-NAME_B =	pipex_bonus
+# List of all compilation options
+# -------------------------------------------------------------------------
+CC = 		gcc
+CFLAGS =	-Wall -Wextra
+CDEBUG =	-g3
+CRELEASE =	-Werror
+CPROFILE =	-pg
 
+# Description of the final target
+# -------------------------------------------------------------------------
+NAME =		pipex
+NAME_B = 	pipex_bonus
+
+# Libraries
+# -------------------------------------------------------------------------
 LIBFT_DIR = libft
 LIBFT =		libft/libft.a
 LIB =		-Llibft -lft
 
-CC = 		gcc
-CFLAGS = 	-Wall -Wextra -Werror
-INCLUDES = 	-Iincludes
+# General rules on makefile
+# -------------------------------------------------------------------------
+OBJS = 		$(addprefix $(SRCS_DIR)/,$(SRCS:.c=.o) $(VANILLA:.c=.o))
+OBJS_B =	$(addprefix $(SRCS_DIR)/,$(SRCS:.c=.o) $(BONUS:.c=.o))
+DEPS =		$(OBJS:.o=.d) $(OBJS_B:.o=.d)
+
+INCLUDES =	$(addprefix -I,$(HEAD_DIR))
+
+ifeq (debug, $(filter debug,$(MAKECMDGOALS)))
+	CFLAGS += $(CDEBUG)
+else ifeq (profile, $(filter profile,$(MAKECMDGOALS)))
+	CFLAGS += $(CPROFILE) $(CRELEASE)
+else
+	CFLAGS += $(CRELEASE)
+endif
 RM =		rm -f
+
+vpath %.c $(SRCS_DIR)
+vpath %.h $(HEAD_DIR)
 
 $(NAME):	$(OBJS) $(LIBFT)
 			$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(OBJS) $(LIB)
@@ -44,31 +72,55 @@ $(NAME_B):	$(OBJS_B) $(LIBFT)
 			$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(OBJS_B) $(LIB)
 
 %.o:		%.c
-			$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
-
-%.d:		%.c
-			@set -e; rm -f $@;												\
-			$(CC) -MM $(CFLAGS) $(INCLUDES) $< > $@.$$$$;					\
-			sed 's,\($*\)\.	o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;			\
-			rm -f $@.$$$$
-
-bonus:		$(NAME_B)
-
-$(LIBFT):
-			make -C $(LIBFT_DIR)
+			$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $< $(LIB)
 
 all:		$(NAME)
 
-clean:
-			$(RM) $(OBJS) $(OBJS_B) $(DEPS)
-			make -C $(LIBFT_DIR) clean
+bonus:		$(NAME_B)
 
-fclean:		clean
-			$(RM) $(NAME) $(NAME_B)
-			make -C $(LIBFT_DIR) fclean
+clean:		dclean
+			$(RM) $(OBJS)
+
+fclean:		clean libfclean
+			$(RM) $(NAME)
 
 re:			fclean all
 
-.PHONY:		all clean fclean re bonus test
+.PHONY:		all clean fclean re bonus
 
-include		$(DEPS)
+# Library rules
+# -----------------------------------------------------------------------
+$(LIBFT):	libft.h
+			$(MAKE) -C $(LIBFT_DIR)
+
+libclean:
+			$(MAKE) -C $(LIBFT_DIR) clean
+
+libfclean:
+			$(MAKE) -C $(LIBFT_DIR) fclean
+
+.PHONY:		libclean libfclean
+
+# Custom rules
+# ------------------------------------------------------------------------
+debug:		all
+profile:	all
+			@echo "\e[36mTo use profiler:"
+			@echo "    1. Run your app"
+			@echo "    2. grof \e[3m<your-app>\e[0;36m gmon.out > \e[3m<analysis-file>\e[0;36m"
+			@echo "    3. cat \e[3m<analysis-file>\e[0m"
+
+.PHONY:		debug profile
+
+# General dependences management
+# ------------------------------------------------------------------------
+%.d:		%.c
+			$(CC) -MM -MT $(@:.d=.o) $(CFLAGS) $(INCLUDES) $< $(LIB) > $@
+
+dclean:
+			$(RM) $(DEPS)
+
+.PHONY:		dclean
+.SILENT:    $(DEPS) dclean
+
+-include	$(DEPS)

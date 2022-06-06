@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_hex.c                                    :+:      :+:    :+:   */
+/*   ft_printf_percent.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 10:03:13 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/16 16:54:02 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/05/11 11:23:42 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/05/11 11:24:28 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <unistd.h>
 #include "libft.h"
 
-int	ft_printf_hex(unsigned int nbr, t_convert *convert)
+int	ft_printf_percent(const int fd)
 {
-	return (ft_printf_hex_base(nbr, "0123456789abcdef0x", convert));
+	return (write(fd, "%", 1));
 }

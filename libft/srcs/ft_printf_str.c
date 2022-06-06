@@ -16,7 +16,7 @@
 static int	ft_strnlen(char *str, int n);
 static int	size_print_null(t_convert *convert);
 
-int	ft_printf_str(char *str, t_convert *convert)
+int	ft_printf_str(const int fd, char *str, t_convert *convert)
 {
 	int	len;
 	int	size_to_print;
@@ -30,12 +30,12 @@ int	ft_printf_str(char *str, t_convert *convert)
 		size_to_print = ft_strlen(str);
 	len = 0;
 	if (!convert->leftify)
-		len += ft_printf_padding(size_to_print, convert);
+		len += ft_printf_padding(fd, size_to_print, convert);
 	if (str == NULL)
-		len += write(1, "(null)", size_to_print);
+		len += write(fd, "(null)", size_to_print);
 	else
-		len += write(1, str, size_to_print);
-	len += ft_printf_padding(len, convert);
+		len += write(fd, str, size_to_print);
+	len += ft_printf_padding(fd, len, convert);
 	return (len);
 }
 

@@ -30,7 +30,7 @@ char	*get_next_line_fds(int fd)
 
 	if (fd < 0)
 		return (NULL);
-	current_buffer = get_buffer(fd, buffer_list);
+	current_buffer = gnl_get_buffer(fd, buffer_list);
 	if (current_buffer == NULL)
 		return (NULL);
 	size = 0;
