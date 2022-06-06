@@ -29,6 +29,7 @@ int	pp_process_read(char *filename, int *pipe_fd)
 			perror(filename);
 			return (1);
 		}
+		close(pipe_fd[1]);
 		return (7);
 	}
 	else if (pid < 0)

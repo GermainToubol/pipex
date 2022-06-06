@@ -38,5 +38,10 @@ int		pp_write_file(char *filename);
 int		pp_write_file_append(char *filename);
 int		pp_process_exec(t_exec *cmd, int *pipe_in, int *pipe_out);
 int		pp_process_read(char *filename, int *pipe_fd);
+int		pp_process_read_bonus(char *end_name, int *pipe_fd);
 int		pp_process_write(char *filename, int *pipe_fd);
+int		pp_process_write_bonus(char *filename, int *pipe_fd);
+int		pp_heredoc(char *arg, int *here_doc);
+int		pp_read_file_bonus(char *end_name);
+
 #endif

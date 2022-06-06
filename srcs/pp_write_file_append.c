@@ -17,7 +17,7 @@
 #include "libft.h"
 #include "pipex.h"
 
-int	pp_write_file(char *filename)
+int	pp_write_file_append(char *filename)
 {
 	int		fd;
 	char	*line;

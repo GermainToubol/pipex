@@ -24,7 +24,7 @@ int	pp_write_file(char *filename)
 	int		fd;
 	char	*line;
 
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		return (1);

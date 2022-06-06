@@ -12,10 +12,12 @@
 
 # List of all the sources (.c)
 # -------------------------------------------------------------------------
-SRCS = 		pp_fullname.c pp_get_path.c pp_read_file.c pp_write_file.c	\
+SRCS = 		pp_fullname.c pp_get_path.c pp_read_file.c pp_write_file.c		\
 			pp_process_read.c pp_process_write.c pp_process_exec.c
 VANILLA =	pipex.c
-BONUS =		pp_read_heredoc.c pp_write_file_append.c
+BONUS = pipex_bonus.c pp_read_heredoc.c pp_write_file_append.c	\
+			pp_process_read_bonus.c pp_read_file_bonus.c			\
+			pp_process_write_bonus.c pp_heredoc.c
 
 # List of the related directories
 # -------------------------------------------------------------------------
@@ -76,10 +78,10 @@ all:		$(NAME)
 bonus:		$(NAME_B)
 
 clean:		dclean
-			$(RM) $(OBJS)
+			$(RM) $(OBJS) $(OBJS_B)
 
 fclean:		clean libfclean
-			$(RM) $(NAME)
+			$(RM) $(NAME) $(NAME_B)
 
 re:			fclean all
 
