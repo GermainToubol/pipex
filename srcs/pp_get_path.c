@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/31 13:36:54 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/01 12:42:37 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/06/06 14:39:37 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/06/06 14:47:12 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -15,11 +15,21 @@
 #include "pipex.h"
 
 static char	**pp_path_split(char *path);
+static int	pp_path(char **paths, char **path);
 static char	**pp_strs_paths(char **path);
 
 /*
  * extract the PATH from the environ variable and convert it to a NULL
  * terminated list of available pathes.
+ *
+ * pp_path_split -> splits the PATH env ariable into {/usr/bin, ...,
+ * NULL}
+ *
+ * pp_path -> appends the end '/' to a path element /usr/bin ->
+ * /usr/bin/
+ *
+ * pp_strs_path -> applys pp_path to each path element -> {/usr/bin/,
+ * ..., NULL}
  *
  */
 

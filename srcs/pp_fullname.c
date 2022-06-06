@@ -5,20 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/31 09:34:20 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/01 17:37:32 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/06/06 14:35:43 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/06/06 14:50:22 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "libft.h"
 #include "pipex.h"
 
 static char	**pp_available_path(char *name, char **path);
 
-/* Check for the right path of the given exec file.							*/
-/* Path should be formated as {"", "/bin/", ..., NULL}						*/
+/*
+ * Check for the right path of the given exec file.
+ *
+ * Path should be formated as {"", "/bin/", ..., NULL}.  The function
+ * get the list of all available pathes and return the first
+ * executable with the write name.
+ *
+ */
 
 char	*pp_fullname(char *name, char **path)
 {

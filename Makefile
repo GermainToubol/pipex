@@ -6,19 +6,15 @@
 #    By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/25 10:59:36 by gtoubol           #+#    #+#              #
-#    Updated: 2022/06/06 10:29:12 by gtoubol          ###   ########.fr        #
+#    Updated: 2022/06/06 15:49:19 by gtoubol          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
 # List of all the sources (.c)
 # -------------------------------------------------------------------------
-SRCS =		pp_fullname.c pp_get_path.c pp_process_exec.c pp_write_file.c	\
-			pp_read_file.c pp_process_read.c pp_process_write.c
-VANILLA =	pipex.c  pp_process_utils.c
-BONUS =		pp_write_file_bonus.c pp_read_file_bonus.c pipex_bonus.c		\
-			pp_process_utils_bonus.c pp_process_read_bonus.c 				\
-			pp_process_write_bonus.c
-
+SRCS =		pp_fullname.c pp_get_path.c pp_read_file.c pp_write_file.c
+VANILLA =	pipex.c
+BONUS =		pp_read_heredoc.c pp_write_file_append.c
 
 # List of the related directories
 # -------------------------------------------------------------------------

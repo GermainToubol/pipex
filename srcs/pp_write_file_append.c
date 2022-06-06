@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pp_process_write_bonus.c                           :+:      :+:    :+:   */
+/*   pp_write_file_append.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/01 16:35:08 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/01 16:50:40 by gtoubol          ###   ########.fr       */
+/*   Created: 2022/06/06 15:48:08 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/06/06 15:48:44 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <errno.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
-#include <stdio.h>
+#include "libft.h"
 #include "pipex.h"
 
-int	pp_process_write_bonus(char *filename, int *pipe_fd)
+int	pp_write_file(char *filename)
 {
-	close(pipe_fd[1]);
-	dup2(pipe_fd[0], STDIN_FILENO);
-	if (pp_write_file_bonus(filename) != 0)
-	{
-		perror(filename);
+	int		fd;
+	char	*line;
+
+	fd = open(filename, O_CREAT | O_APPEND | O_WRONLY, 0644);
+	if (fd == -1)
 		return (1);
+	line = get_next_line(0);
+	while (line != NULL && errno == 0)
+	{
+		ft_putstr_fd(line, fd);
+		free(line);
+		line = get_next_line(0);
 	}
+	close(fd);
+	if (errno != 0)
+		return (1);
 	return (0);
 }

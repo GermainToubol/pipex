@@ -6,15 +6,12 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 16:55:49 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 14:22:07 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 15:47:25 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "libft.h"
 #include "pipex.h"
 
@@ -23,31 +20,28 @@
  *
  */
 
-#define BSIZE 4096
-
 int	pp_read_file(char *filename)
 {
 	int		fd;
-	char	*line;
-	int re;
+	char	buffer[R_BUFF_SIZE];
+	ssize_t	re;
+	ssize_t	w_status;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (1);
-	line = ft_calloc(BUFFER_SIZE + 1, sizeof(*line));
-	if (line == NULL)
-		return (1);
-	re = read(fd, line, BUFFER_SIZE);
-	while (re > 0)
+	ft_bzero(buffer, R_BUFF_SIZE * sizeof(*buffer));
+	re = 1;
+	w_status = 1;
+	while (re > 0 && w_status > 0)
 	{
+		re = read(fd, buffer, R_BUFF_SIZE);
 		if (re > 0)
-			ft_putstr_fd(line, 1);
-		ft_bzero(line, (BUFFER_SIZE + 1) * sizeof(*line));
-		re = read(fd, line, BUFFER_SIZE);
+			w_status = write(1, buffer, re);
+
 	}
-	free(line);
 	close(fd);
-	if (errno != 0)
+	if (re < 0 || w_status < 0)
 		return (1);
 	return (0);
 }
