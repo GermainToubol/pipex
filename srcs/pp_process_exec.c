@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 11:44:20 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/02 17:53:16 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 12:55:31 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -39,6 +39,8 @@ int	pp_process_exec(t_exec *cmd, int *pipe_in, int *pipe_out)
 		return (1);
 	execve(fullname, args, cmd->env);
 	perror(args[0]);
+	close(pipe_in[0]);
+	close(pipe_out[0]);
 	free(fullname);
 	ft_free_split(paths);
 	ft_free_split(args);

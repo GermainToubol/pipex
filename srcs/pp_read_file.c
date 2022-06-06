@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 16:55:49 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/01 14:43:23 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 14:22:07 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
@@ -23,21 +23,29 @@
  *
  */
 
+#define BSIZE 4096
+
 int	pp_read_file(char *filename)
 {
 	int		fd;
 	char	*line;
+	int re;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		return (1);
-	line = get_next_line(fd);
-	while (line != NULL)
+	line = ft_calloc(BUFFER_SIZE + 1, sizeof(*line));
+	if (line == NULL)
+		return (1);
+	re = read(fd, line, BUFFER_SIZE);
+	while (re > 0)
 	{
-		ft_putstr_fd(line, 1);
-		free(line);
-		line = get_next_line(fd);
+		if (re > 0)
+			ft_putstr_fd(line, 1);
+		ft_bzero(line, (BUFFER_SIZE + 1) * sizeof(*line));
+		re = read(fd, line, BUFFER_SIZE);
 	}
+	free(line);
 	close(fd);
 	if (errno != 0)
 		return (1);

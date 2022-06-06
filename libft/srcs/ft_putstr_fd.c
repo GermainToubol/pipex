@@ -6,21 +6,18 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 11:45:47 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/05/12 14:27:20 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 13:26:34 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <stddef.h>
 #include "libft.h"
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	size_t	i;
+	size_t	len;
 
-	if (!s)
+	if (s == NULL)
 		return ;
-	i = 0;
-	while (s[i] != '\0')
-	{
-		ft_putchar_fd(s[i], fd);
-		i++;
-	}
+	len = ft_strlen(s);
+	write(fd, s, len);
 }

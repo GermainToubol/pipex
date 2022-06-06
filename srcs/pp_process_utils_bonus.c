@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 16:26:02 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/03 16:49:42 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 13:02:27 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -15,6 +15,17 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "pipex.h"
+#include "libft.h"
+
+int ft_close(int *fd)
+{
+	int i;
+
+	if (*fd != 0)
+		i = close(*fd);
+	*fd = 0;
+	return (i);
+}
 
 int	do_read_bonus(char *filename, int *pipe_out, int *is_son, int here_doc)
 {
@@ -34,7 +45,8 @@ int	do_read_bonus(char *filename, int *pipe_out, int *is_son, int here_doc)
 		perror("fork");
 		return (1);
 	}
-	return (0);
+	ft_fprintf(2, "read: %d\n", (int)pid);
+	return (pid);
 }
 
 int	do_process(t_exec *cmd, int *pipe_in, int *pipe_out, int *is_son)
@@ -45,6 +57,11 @@ int	do_process(t_exec *cmd, int *pipe_in, int *pipe_out, int *is_son)
 	pid = fork();
 	if (pid == 0)
 	{
+		if ((pipe_in - 2)[0] != 0)
+			ft_close((pipe_in - 2));
+		if ((pipe_in - 2)[1] != 0)
+			ft_close(pipe_in - 1);
+		close(pipe_out[0]);
 		*is_son = 1;
 		return (pp_process_exec(cmd, pipe_in, pipe_out));
 	}
@@ -53,9 +70,8 @@ int	do_process(t_exec *cmd, int *pipe_in, int *pipe_out, int *is_son)
 		perror("fork");
 		return (1);
 	}
-	close(pipe_in[0]);
-	close(pipe_in[1]);
-	return (0);
+	ft_fprintf(2, "exec: %d\n", (int)pid);
+	return (pid);
 }
 
 int	do_write_bonus(char *filename, int *pipe_in, int *is_son, int here_doc)
@@ -75,7 +91,6 @@ int	do_write_bonus(char *filename, int *pipe_in, int *is_son, int here_doc)
 		perror("fork");
 		return (1);
 	}
-	close(pipe_in[0]);
-	close(pipe_in[1]);
-	return (0);
+	ft_fprintf(2, "write: %d\n", (int)pid);
+	return (pid);
 }
