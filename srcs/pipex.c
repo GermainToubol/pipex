@@ -6,19 +6,22 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:31:02 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 17:36:38 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 19:05:47 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <sys/wait.h>
 #include <unistd.h>
+#include "libft.h"
 #include "pipex.h"
 
-int main(int argc, char **argv, char **env)
+static int	pp_do_exec(int *pipe_in, int *pipe_out, t_exec *cmd, char *name);
+static int	pp_wait_all(int is_son, int n);
+
+int	main(int argc, char **argv, char **env)
 {
-	int	pfd[3][2];
-	int	is_son;
-	t_exec cmd;
-	int status;
+	int		pfd[3][2];
+	int		is_son;
+	t_exec	cmd;
 
 	if (argc != 5)
 		return (0);
@@ -26,35 +29,47 @@ int main(int argc, char **argv, char **env)
 	pipe(pfd[0]);
 	is_son = pp_process_read(argv[1], pfd[0]);
 	if (is_son == 0)
-	{
-		pipe(pfd[1]);
-		cmd.name = argv[2];
-		is_son = pp_process_exec(&cmd, pfd[0], pfd[1]);
-		close(pfd[0][0]);
-		close(pfd[0][1]);
-	}
+		is_son = pp_do_exec(pfd[0], pfd[1], &cmd, argv[2]);
 	if (is_son == 0)
-	{
-		pipe(pfd[2]);
-		cmd.name = argv[3];
-		is_son = pp_process_exec(&cmd, pfd[1], pfd[2]);
-		close(pfd[1][0]);
-		close(pfd[1][1]);
-	}
+		is_son = pp_do_exec(pfd[1], pfd[2], &cmd, argv[3]);
 	if (is_son == 0)
 	{
 		is_son = pp_process_write(argv[4], pfd[2]);
 		close(pfd[2][0]);
 		close(pfd[2][1]);
 	}
-	if (is_son == 0)
+	return (pp_wait_all(is_son, argc - 1));
+}
+
+static int	pp_do_exec(int *pipe_in, int *pipe_out, t_exec *cmd, char *name)
+{
+	int	is_son;
+
+	pipe(pipe_out);
+	cmd->name = name;
+	is_son = pp_process_exec(cmd, pipe_in, pipe_out);
+	close(pipe_in[0]);
+	close(pipe_in[1]);
+	return (is_son);
+}
+
+static int	pp_wait_all(int is_son, int n)
+{
+	int	i;
+	int	status;
+	int	tmp;
+
+	if (is_son != 0)
+		return (is_son);
+	i = 0;
+	status = 0;
+	while (i < n)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			status = 0;
-			wait(&status);
-			status = 0;
-		}
+		tmp = 0;
+		wait(&tmp);
+		if (tmp != 0)
+			status |= tmp;
+		i++;
 	}
-	return (0);
+	return (status);
 }

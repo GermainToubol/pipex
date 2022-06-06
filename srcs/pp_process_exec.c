@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:33:23 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 16:41:39 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 18:57:24 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -20,6 +20,7 @@
 static int	pp_set_args(t_exec *cmd, char ***paths, char ***args,
 				char **fullname);
 static void	pp_check_name(char **args);
+static int	pp_cleanup(int *pipe_in, int *pipe_out, char **paths, char **args);
 
 int	pp_process_exec(t_exec *cmd, int *pipe_in, int *pipe_out)
 {
@@ -39,12 +40,8 @@ int	pp_process_exec(t_exec *cmd, int *pipe_in, int *pipe_out)
 			return (1);
 		execve(fullname, args, cmd->env);
 		perror(args[0]);
-		close(pipe_in[0]);
-		close(pipe_out[1]);
 		free(fullname);
-		ft_free_split(paths);
-		ft_free_split(args);
-		return (1);
+		return (pp_cleanup(pipe_in, pipe_out, paths, args));
 	}
 	else if (pid < 0)
 	{
@@ -52,6 +49,15 @@ int	pp_process_exec(t_exec *cmd, int *pipe_in, int *pipe_out)
 		return (1);
 	}
 	return (0);
+}
+
+static int	pp_cleanup(int *pipe_in, int *pipe_out, char **paths, char **args)
+{
+	close(pipe_in[0]);
+	close(pipe_out[1]);
+	ft_free_split(paths);
+	ft_free_split(args);
+	return (2);
 }
 
 static void	pp_check_name(char **args)

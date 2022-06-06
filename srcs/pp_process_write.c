@@ -6,12 +6,13 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:28:05 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 16:29:17 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 18:51:23 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "libft.h"
 #include "pipex.h"
 
 int	pp_process_write(char *filename, int *pipe_fd)
@@ -28,7 +29,7 @@ int	pp_process_write(char *filename, int *pipe_fd)
 			perror(filename);
 			return (1);
 		}
-		return (0);
+		return (7);
 	}
 	else if (pid < 0)
 	{
