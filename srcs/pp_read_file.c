@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 16:55:49 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 15:47:25 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 17:30:55 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <fcntl.h>
@@ -38,7 +38,6 @@ int	pp_read_file(char *filename)
 		re = read(fd, buffer, R_BUFF_SIZE);
 		if (re > 0)
 			w_status = write(1, buffer, re);
-
 	}
 	close(fd);
 	if (re < 0 || w_status < 0)

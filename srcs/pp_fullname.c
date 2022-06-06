@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:35:43 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 14:50:22 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 17:45:03 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stddef.h>
@@ -34,7 +34,7 @@ char	*pp_fullname(char *name, char **path)
 
 	fullnames = pp_available_path(name, path);
 	if (fullnames == NULL || fullnames[0] == NULL)
-		return (NULL);
+		return (free(fullnames), NULL);
 	i = 0;
 	fullname = NULL;
 	while (fullnames[i] != NULL)

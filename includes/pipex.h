@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 14:31:33 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 15:50:28 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/06 17:19:12 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PIPEX_H
@@ -36,4 +36,7 @@ int		pp_read_file(char *filename);
 int		pp_read_heredoc(char *end_name);
 int		pp_write_file(char *filename);
 int		pp_write_file_append(char *filename);
+int		pp_process_exec(t_exec *cmd, int *pipe_in, int *pipe_out);
+int		pp_process_read(char *filename, int *pipe_fd);
+int		pp_process_write(char *filename, int *pipe_fd);
 #endif
