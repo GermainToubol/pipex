@@ -6,7 +6,7 @@
 /*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:28:05 by gtoubol           #+#    #+#             */
-/*   Updated: 2022/06/06 18:51:23 by gtoubol          ###   ########.fr       */
+/*   Updated: 2022/06/07 10:23:09 by gtoubol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -26,9 +26,11 @@ int	pp_process_write(char *filename, int *pipe_fd)
 		dup2(pipe_fd[0], STDIN_FILENO);
 		if (pp_write_file(filename) != 0)
 		{
+			close(pipe_fd[0]);
 			perror(filename);
 			return (1);
 		}
+		close(pipe_fd[0]);
 		return (7);
 	}
 	else if (pid < 0)

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtoubol <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/07 09:46:00 by gtoubol           #+#    #+#             */
+/*   Updated: 2022/06/07 09:46:34 by gtoubol          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include <stddef.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -35,9 +46,10 @@ int	main(int argc, char **argv, char **env)
 	return (pp_wait_all(is_son, argc - 1 - here_doc));
 }
 
-static int	pp_do_read(int *pipe_out, char *filename, int here_doc, char *end_name)
+static int	pp_do_read(int *pipe_out, char *filename, int here_doc,
+				char *end_name)
 {
-	int is_son;
+	int	is_son;
 
 	pipe(pipe_out);
 	if (here_doc == 0)
